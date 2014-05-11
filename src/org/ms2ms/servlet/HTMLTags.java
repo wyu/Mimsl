@@ -1,7 +1,7 @@
 package org.ms2ms.servlet;
 
-import com.hfg.html.Table;
-import com.hfg.html.Tr;
+import com.hfg.html.*;
+import com.hfg.xml.Doctype;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,9 +27,25 @@ public class HTMLTags
     if (table!=null)
     {
       Tr row = table.addRow();
-      for (String cell : cells) row.addCell(cell);
+      for (String cell : cells)
+      {
+        String[] items = cell.split("\\^");
+        Td C=row.addCell(items[0]);
+        if (items.length>1) C.setClass(items[1]);
+      }
       return row;
     }
     return null;
+  }
+  public static HTMLDoc newHTMLDoc(HTML html)
+  {
+    HTMLDoc doc = new HTMLDoc(Doctype.HTML_4_01_TRANSITIONAL);
+    doc.setRootNode(html);
+    //html.getHead().addJavascriptLink("path to js file");
+    html.getHead().addStyleSheetLink("css/ms2ms.css");
+    //html.getHead().addJavascript("some script");
+    //html.getHead().addStyleTag("some css");
+
+    return doc;
   }
 }

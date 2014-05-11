@@ -1,9 +1,6 @@
 package org.ms2ms.servlet;
 
-import com.hfg.html.Body;
-import com.hfg.html.HTMLDoc;
-import com.hfg.html.Table;
-import com.hfg.html.Tr;
+import com.hfg.html.*;
 import com.hfg.xml.Doctype;
 import org.expasy.mzjava.core.ms.AbsoluteTolerance;
 import org.expasy.mzjava.core.ms.PpmTolerance;
@@ -11,6 +8,7 @@ import org.expasy.mzjava.core.ms.Tolerance;
 import org.expasy.mzjava.core.ms.peaklist.DoublePeakList;
 import org.expasy.mzjava.core.ms.peaklist.PeakList;
 import org.expasy.mzjava.core.ms.spectrum.Peak;
+import org.expasy.mzjava.proteomics.ms.spectrum.LibrarySpectrum;
 import org.expasy.mzjava.proteomics.ms.spectrum.PepLibPeakAnnotation;
 import org.ms2ms.alg.Peaks;
 import org.ms2ms.mimsl.MIMSL;
@@ -60,86 +58,47 @@ public class MimslServlet extends javax.servlet.http.HttpServlet
 
       // 500.730, +2(6): 318.20,520.19,568.30,683.25,782.32,869.35,
       List<AnnotatedSpectrum> candidates = MIMSL.run(ions, spec_type, prec_tol, frag_tol);
-      HTMLDoc doc = new HTMLDoc(Doctype.HTML_5);
-      Body body = new Body();
-      doc.setRootNode(body);
+
+      HTML   html = new HTML();
+      HTMLDoc doc = HTMLTags.newHTMLDoc(html);
       Table table = newCandidateTable(candidates);
-      body.addSubtag(table);
+      html.getBody().addSubtag(new H2("Candidate MS/MS Spectra"));
+      html.getBody().addSubtag(table);
+      html.getBody().addSubtag(new Div("Instrument: " + insts[0] + ", Precursor: " + pmz[0] + ", +" + pz[0] + "; Fragment Ions: " + frag[0]).setClass("cls_footnote"));
       response.getWriter().println(doc.toIndentedHTML(2,2));
     }
     catch (Exception e)
     {
-
+      e.printStackTrace();
     }
-/*
-    //response.getOutputStream().print("Hello");
-    // Set response content type
-    response.setContentType("text/html");
-
-    PrintWriter out = response.getWriter();
-    String title = "Reading All Form Parameters";
-    String docType =
-        "<!doctype html public \"-//w3c//dtd html 4.0 " +
-            "transitional//en\">\n";
-    out.println(docType +
-        "<html>\n" +
-        "<head><title>" + title + "</title></head>\n" +
-        "<body bgcolor=\"#f0f0f0\">\n" +
-        "<h1 align=\"center\">" + title + "</h1>\n" +
-        "<table width=\"100%\" border=\"1\" align=\"center\">\n" +
-        "<tr bgcolor=\"#949494\">\n" +
-        "<th>Param Name</th><th>Param Value(s)</th>\n"+
-        "</tr>\n");
-
-
-    Enumeration paramNames = request.getParameterNames();
-
-    while(paramNames.hasMoreElements()) {
-      String paramName = (String)paramNames.nextElement();
-      out.print("<tr><td>" + paramName + "</td>\n<td>");
-      String[] paramValues =
-          request.getParameterValues(paramName);
-      // Read single valued data
-      if (paramValues.length == 1) {
-        String paramValue = paramValues[0];
-        if (paramValue.length() == 0)
-          out.println("<i>No Value</i>");
-        else
-          out.println(paramValue);
-      } else {
-        // Read multiple valued data
-        out.println("<ul>");
-        for(int i=0; i < paramValues.length; i++) {
-          out.println("<li>" + paramValues[i]);
-        }
-        out.println("</ul>");
-      }
-    }
-    out.println("</tr>\n</table>\n</body></html>"); */
   }
   public static Table newCandidateTable(Collection<AnnotatedSpectrum> candidates)
   {
     if (!Tools.isSet(candidates)) return null;
 
-    Table table = new Table();
+    Table table = new Table(); table.setClass("cls_listing");
 
-    HTMLTags.newHeaderRow(table, "score","delta","votes","verdict","ppm","peptide","m/z","z","sig","unmatch","protein");
+    Tr header = HTMLTags.newHeaderRow(table, "score","delta","vote","verdict","&nbsp;ppm","&nbsp;peptide","&nbsp;m/z","z","sig","mis","&nbsp;protein");
+    header.setClass("cls_head_row");
 
+    int rows=0;
     for (AnnotatedSpectrum candidate : candidates)
     {
       String[] peptide = candidate.getComment().split("\\^");
-      HTMLTags.newRow(table,
+      boolean isnorm = candidate.getStatus().equals(LibrarySpectrum.Status.NORMAL);
+      Tr row = HTMLTags.newRow(table,
           Tools.d2s(candidate.getScore(AnnotatedSpectrum.SCR_MIMSL),       2),
           Tools.d2s(candidate.getScore(AnnotatedSpectrum.SCR_MIMSL_DELTA), 2),
           candidate.getIonMatched()+"",
-          candidate.getStatus().toString(),
-          Tools.d2s(Peaks.toPPM(candidate.getPrecursor().getMz(), candidate.getMzQueried()), 2),
+          !isnorm?candidate.getStatus().toString():"&nbsp;",
+          isnorm?Tools.d2s(Peaks.toPPM(candidate.getPrecursor().getMz(), candidate.getMzQueried()), 2):"&nbsp;",
           peptide[0],
           Tools.d2s(candidate.getPrecursor().getMz(), 4),
           candidate.getPrecursor().getCharge()+"",
           candidate.getIonIndexed()+"",
           (candidate.getIonIndexed()-candidate.getIonMatched())+"",
-          (peptide.length>1?peptide[1]:""));
+          (peptide.length>1?peptide[1]+"^cls_nowrap":""));
+      row.setClass(++rows%2==0 ? "cls_shade_row":"cls_light_row");
     }
     return table;
   }
