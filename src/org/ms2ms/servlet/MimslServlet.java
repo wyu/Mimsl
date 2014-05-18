@@ -43,7 +43,7 @@ public class MimslServlet extends javax.servlet.http.HttpServlet
 
     PeakList<PepLibPeakAnnotation> ions = new DoublePeakList<PepLibPeakAnnotation>();
     Tolerance prec_tol = new PpmTolerance(15d), frag_tol = new AbsoluteTolerance(0.5d);
-    char spec_type = HBasePeakList.SPEC_TRAP_CID;
+    byte[] spec_type = HBasePeakList.SPEC_TRAP_CID;
     try
     {
       if      (insts[0].equals(Peaks.OBT_HR_CID)) { frag_tol = new PpmTolerance(15d);}
