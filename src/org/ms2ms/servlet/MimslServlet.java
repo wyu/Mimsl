@@ -12,6 +12,7 @@ import org.expasy.mzjava.proteomics.ms.spectrum.LibrarySpectrum;
 import org.expasy.mzjava.proteomics.ms.spectrum.PepLibPeakAnnotation;
 import org.ms2ms.alg.Peaks;
 import org.ms2ms.mimsl.MIMSL;
+import org.ms2ms.mimsl.MimslSettings;
 import org.ms2ms.mzjava.AnnotatedSpectrum;
 import org.ms2ms.nosql.HBasePeakList;
 import org.ms2ms.utils.Tools;
@@ -39,7 +40,13 @@ public class MimslServlet extends javax.servlet.http.HttpServlet
   protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException
   {
     // retrieve the parameters
-    String[] insts=request.getParameterValues("instrument"), pmz=request.getParameterValues("precursor_mz"), pz=request.getParameterValues("pz"), frag=request.getParameterValues("fragments");
+    String insts=request.getParameterValues("instrument")[0],
+             pmz=request.getParameterValues("precursor_mz")[0],
+              pz=request.getParameterValues("pz")[0],
+            frag=request.getParameterValues("fragments")[0];
+
+    response.getWriter().println(lookup(Peaks.newPeaks(pmz, Integer.valueOf(pz)), MimslSettings.valueOf(insts),Peaks.newPeaks(frag, 1)));
+/*
 
     PeakList<PepLibPeakAnnotation> ions = new DoublePeakList<PepLibPeakAnnotation>();
     Tolerance prec_tol = new PpmTolerance(15d), frag_tol = new AbsoluteTolerance(0.5d);
@@ -71,6 +78,7 @@ public class MimslServlet extends javax.servlet.http.HttpServlet
     {
       e.printStackTrace();
     }
+*/
   }
   public static Table newCandidateTable(Collection<AnnotatedSpectrum> candidates)
   {
@@ -101,5 +109,25 @@ public class MimslServlet extends javax.servlet.http.HttpServlet
       row.setClass(++rows%2==0 ? "cls_shade_row":"cls_light_row");
     }
     return table;
+  }
+  public static String lookup(Peak[] precursors, MimslSettings settings, Peak... frags)
+  {
+    try
+    {
+      List<AnnotatedSpectrum> candidates = MIMSL.run(precursors, settings, frags);
+
+      HTML   html = new HTML();
+      HTMLDoc doc = HTMLTags.newHTMLDoc(html);
+      Table table = newCandidateTable(candidates);
+      html.getBody().addSubtag(new H2("Candidate MS/MS Spectra"));
+      html.getBody().addSubtag(table);
+//      html.getBody().addSubtag(new Div("Instrument: " + insts[0] + ", Precursor: " + pmz[0] + ", +" + pz[0] + "; Fragment Ions: " + frag[0]).setClass("cls_footnote"));
+      return html.toIndentedHTML(2,2);
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+    }
+    return null;
   }
 }
