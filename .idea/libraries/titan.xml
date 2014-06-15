@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="titan">
+    <CLASSES>
+      <root url="jar:///usr/local/titan/current/lib/blueprints-core-2.4.0.jar!/" />
+      <root url="jar:///usr/local/titan/current/lib/blueprints-graph-sail-2.4.0.jar!/" />
+      <root url="jar:///usr/local/titan/current/lib/blueprints-sail-graph-2.4.0.jar!/" />
+      <root url="jar:///usr/local/titan/current/lib/titan-hbase-0.4.4.jar!/" />
+      <root url="jar:///usr/local/titan/current/lib/titan-core-0.4.4.jar!/" />
+      <root url="jar:///usr/local/titan/current/lib/titan-es-0.4.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
