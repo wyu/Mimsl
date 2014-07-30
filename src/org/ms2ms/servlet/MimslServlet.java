@@ -108,12 +108,12 @@ public class MimslServlet extends javax.servlet.http.HttpServlet
       List<AnnotatedSpectrum> candidates = MIMSL.run(precursors, settings, frags);
 
       HTML   html = new HTML();
-      HTMLDoc doc = HTMLTags.newHTMLDoc(html);
+      HTMLDoc doc = HTMLTags.newHTMLDoc(html, "MS/MS Spectra that are Share the Query Fragments and Precursor(s)");
       Table table = newCandidateTable(candidates);
       html.getBody().addSubtag(new H2("Candidate MS/MS Spectra"));
       html.getBody().addSubtag(table);
 //      html.getBody().addSubtag(new Div("Instrument: " + insts[0] + ", Precursor: " + pmz[0] + ", +" + pz[0] + "; Fragment Ions: " + frag[0]).setClass("cls_footnote"));
-      return html.toIndentedHTML(2,2);
+      return doc.toIndentedHTML(2,2);
     }
     catch (Exception e)
     {
