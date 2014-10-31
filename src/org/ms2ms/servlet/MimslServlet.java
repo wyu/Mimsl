@@ -3,7 +3,6 @@ package org.ms2ms.servlet;
 import com.hfg.html.*;
 import org.expasy.mzjava.core.ms.spectrum.Peak;
 import org.expasy.mzjava.proteomics.ms.spectrum.LibrarySpectrum;
-import org.ms2ms.MsSettings;
 import org.ms2ms.alg.Peaks;
 import org.ms2ms.mimsl.MIMSL;
 import org.ms2ms.mimsl.MimslSettings;
