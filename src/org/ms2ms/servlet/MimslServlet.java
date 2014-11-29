@@ -1,14 +1,18 @@
 package org.ms2ms.servlet;
 
 import com.hfg.html.*;
-import org.expasy.mzjava.core.ms.spectrum.Peak;
-import org.expasy.mzjava.proteomics.ms.spectrum.LibrarySpectrum;
+import org.expasy.mzjava.core.ms.peaklist.Peak;
+import org.expasy.mzjava.proteomics.ms.consensus.PeptideConsensusSpectrum;
 import org.ms2ms.alg.Peaks;
 import org.ms2ms.mimsl.MIMSL;
 import org.ms2ms.mimsl.MimslSettings;
 import org.ms2ms.mzjava.AnnotatedSpectrum;
 import org.ms2ms.utils.Tools;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
@@ -20,14 +24,14 @@ import java.util.List;
  * Time: 12:05 AM
  * To change this template use File | Settings | File Templates.
  */
-public class MimslServlet extends javax.servlet.http.HttpServlet
+public class MimslServlet extends HttpServlet
 {
-  protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
   {
     doGet(request, response);
   }
 
-  protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
   {
     // retrieve the parameters
     String insts=request.getParameterValues("instrument")[0],
@@ -83,7 +87,7 @@ public class MimslServlet extends javax.servlet.http.HttpServlet
     for (AnnotatedSpectrum candidate : candidates)
     {
       String[] peptide = candidate.getComment().split("\\^");
-      boolean isnorm = candidate.getStatus().equals(LibrarySpectrum.Status.NORMAL);
+      boolean isnorm = candidate.getStatus().equals(PeptideConsensusSpectrum.Status.NORMAL);
       Tr row = HTMLTags.newRow(table,
           Tools.d2s(candidate.getScore(AnnotatedSpectrum.SCR_MIMSL),       2),
           Tools.d2s(candidate.getScore(AnnotatedSpectrum.SCR_MIMSL_DELTA), 2),
