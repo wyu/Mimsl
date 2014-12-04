@@ -1,8 +1,8 @@
 <component name="ArtifactManager">
-  <artifact type="war" name="Mimsl">
+  <artifact type="war" build-on-make="true" name="Mimsl">
     <output-path>$PROJECT_DIR$/out/artifacts/Mimsl</output-path>
     <root id="archive" name="Mimsl.war">
-      <element id="artifact" artifact-name="Mimsl:war exploded" />
+      <element id="artifact" artifact-name="MimslServlet exploded" />
       <element id="directory" name="WEB-INF">
         <element id="directory" name="lib">
           <element id="library" level="project" name="titan" />

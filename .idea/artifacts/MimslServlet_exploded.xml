@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" build-on-make="true" name="MimslServlet exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/MimslServlet_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="Mimsl/web/MimslServlet" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="Mimsl" />
+          <element id="module-output" name="ms2ms" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="libs" />
+          <element id="library" level="project" name="mzJava" />
+          <element id="library" level="project" name="hbase" />
+          <element id="library" level="project" name="titan" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

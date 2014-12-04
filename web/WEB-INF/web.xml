@@ -5,14 +5,29 @@
 		  http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
            version="2.5">
 
+    <display-name>Mimsl</display-name>
+    <description>Instant lookup of MS/MS spectral library</description>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.jpg</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.js</url-pattern>
+    </servlet-mapping>
     <servlet>
-        <description>Web Interface for MIMSL App</description>
-        <display-name>Mimsl</display-name>
-        <servlet-name>MimslServlet</servlet-name>
-        <servlet-class>org.ms2ms.servlet.MimslServlet</servlet-class>
+      <description>Web Interface for MIMSL App</description>
+      <display-name>Mimsl</display-name>
+      <servlet-name>MimslServlet</servlet-name>
+      <servlet-class>org.ms2ms.servlet.MimslServlet</servlet-class>
     </servlet>
     <servlet-mapping>
+      <servlet-name>MimslServlet</servlet-name>
+      <url-pattern>/Mimsl</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>MimslServlet</servlet-name>
-        <url-pattern>/Mimsl</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
 </web-app>
