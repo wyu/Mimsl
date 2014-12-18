@@ -7,6 +7,7 @@
         <element id="directory" name="classes">
           <element id="module-output" name="Mimsl" />
           <element id="module-output" name="ms2ms" />
+          <element id="module-output" name="javaRdata" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="libs" />
