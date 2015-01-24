@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="PSI">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../contrib/PSI" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../contrib/PSI" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/../contrib/PSI" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../contrib/PSI" recursive="false" type="SOURCES" />
+  </library>
+</component>

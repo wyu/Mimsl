@@ -2,6 +2,7 @@ package org.ms2ms.servlet;
 
 import com.hfg.html.*;
 import com.hfg.xml.Doctype;
+import org.ms2ms.utils.Strs;
 import org.ms2ms.utils.Tools;
 
 /**
@@ -42,7 +43,7 @@ public class HTMLTags
   {
     HTMLDoc doc = new HTMLDoc(Doctype.HTML_4_01_TRANSITIONAL);
     doc.setRootNode(html);
-    if (Tools.isSet(title)) html.getHead().setTitle(title);
+    if (Strs.isSet(title)) html.getHead().setTitle(title);
     //html.getHead().addJavascriptLink("path to js file");
     html.getHead().addStyleSheetLink("css/ms2ms.css");
     //html.getHead().addJavascript("some script");
